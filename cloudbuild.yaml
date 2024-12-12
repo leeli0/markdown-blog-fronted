@@ -1,0 +1,33 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args:
+  - 'build'
+  - '-t'
+  - 'us-west2-docker.pkg.dev/$PROJECT_ID/markdown-blog/markdown-blog-fronted:$SHORT_SHA'
+  - '.'
+  automapSubstitutions: true
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: Generate manifest
+  entrypoint: /bin/sh
+  args:
+  - '-c'
+  - |
+    sed "s/GOOGLE_CLOUD_PROJECT/${PROJECT_ID}/g" kubernetes.yaml.tpl | \
+    sed "s/COMMIT_SHA/${SHORT_SHA}/g" > kubernetes.yaml
+
+- name: 'gcr.io/cloud-builders/kubectl'
+  id: Deploy
+  args:
+  - 'apply'
+  - '-f'
+  - 'kubernetes.yaml'
+  env:
+  - 'CLOUDSDK_COMPUTE_REGION=us-west2'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=markdown-blog'
+
+images:
+- 'us-west2-docker.pkg.dev/$PROJECT_ID/markdown-blog/markdown-blog-fronted:$SHORT_SHA'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
