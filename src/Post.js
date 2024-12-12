@@ -7,7 +7,7 @@ function Post() {
     const [postContent, setPostContent] = useState('');
 
     useEffect(() => {
-        axios.get(`http://localhost:5000/api/posts/${id}`).then((response) => {
+        axios.get(`http://34.94.162.237:5000/api/posts/${id}`).then((response) => {
             setPostContent(response.data.content);
         });
     }, [id]);

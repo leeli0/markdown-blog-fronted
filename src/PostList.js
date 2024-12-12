@@ -6,7 +6,7 @@ function PostList() {
     const [posts, setPosts] = useState([]);
 
     useEffect(() => {
-        axios.get('http://localhost:5000/api/posts').then((response) => {
+        axios.get('http://34.94.162.237:5000/api/posts').then((response) => {
             setPosts(response.data);
             console.log(response.data);
         });
