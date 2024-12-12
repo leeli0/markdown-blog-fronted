@@ -18,7 +18,7 @@ spec:
       - name: markdown-blog-fronted
         image: us-west2-docker.pkg.dev/GOOGLE_CLOUD_PROJECT/markdown-blog/markdown-blog-fronted:COMMIT_SHA
         ports:
-        - containerPort: 5000
+        - containerPort: 80
 ---
 kind: Service
 apiVersion: v1
@@ -29,6 +29,6 @@ spec:
     app: markdown-blog-fronted
   ports:
   - protocol: TCP
-    port: 5000
-    targetPort: 5000
+    port: 80
+    targetPort: 80
   type: LoadBalancer
